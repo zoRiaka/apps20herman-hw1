@@ -129,7 +129,10 @@ public class TemperatureSeriesAnalysis {
     }
 
     public TempSummaryStatistics summaryStatistics() {
-        return null;
+        if (this.temperatureSeries.length==0) {
+            throw new IllegalArgumentException();
+        }
+        return new TempSummaryStatistics();
     }
 
     public int addTemps(double... temps) {
@@ -150,3 +153,4 @@ public class TemperatureSeriesAnalysis {
         return len;
     }
 }
+

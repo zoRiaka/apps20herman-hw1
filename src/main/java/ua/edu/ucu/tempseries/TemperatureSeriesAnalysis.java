@@ -1,11 +1,9 @@
 package ua.edu.ucu.tempseries;
 
-
-import java.util.Arrays;
 import java.util.InputMismatchException;
 
 public class TemperatureSeriesAnalysis {
-    private double[] temperatureSeries;
+    public double[] temperatureSeries;
     private double aver;
 
     public TemperatureSeriesAnalysis() {
@@ -49,7 +47,13 @@ public class TemperatureSeriesAnalysis {
         if (temperatureSeries.length==0) {
             throw new IllegalArgumentException();
         }
-        return Arrays.stream(temperatureSeries).min().getAsDouble();
+        double minV = temperatureSeries[0];
+        for(int i=1;i<temperatureSeries.length;i++){
+            if(temperatureSeries[i] < minV){
+                minV = temperatureSeries[i];
+            }
+        }
+        return minV;
     }
 
     public double max() {
@@ -57,7 +61,13 @@ public class TemperatureSeriesAnalysis {
         if (temperatureSeries.length==0) {
             throw new IllegalArgumentException();
         }
-        return Arrays.stream(temperatureSeries).max().getAsDouble();
+        double maxV = temperatureSeries[0];
+        for(int i=1;i<temperatureSeries.length;i++){
+            if(temperatureSeries[i] > maxV){
+                maxV = temperatureSeries[i];
+            }
+        }
+        return maxV;
     }
 
     public double findTempClosestToZero() {
@@ -98,12 +108,13 @@ public class TemperatureSeriesAnalysis {
         return closest;
     }
 
-    public static void addToArray(int n, double[] arr, double val) {
+    public static double[] addToArray(int n, double[] arr, double val) {
         double newArray[] = new double[n + 1];
         for (int i = 0; i < n; i++){
             newArray[i] = arr[i];
         }
         newArray[n] = val;
+        return newArray;
     }
 
     public double[] findTempsLessThen(double tempValue) {
@@ -111,7 +122,7 @@ public class TemperatureSeriesAnalysis {
         double[] newSeries = new double[0];
         for (int i = 0; i < temperatureSeries.length; i++) {
             if (temperatureSeries[i]<tempValue){
-                addToArray(newSeries.length, newSeries, temperatureSeries[i]);
+                newSeries = addToArray(newSeries.length, newSeries, temperatureSeries[i]);
             }
         }
         return newSeries;
@@ -122,7 +133,7 @@ public class TemperatureSeriesAnalysis {
         double[] newSeries = new double[0];
         for (int i = 0; i < temperatureSeries.length; i++) {
             if (temperatureSeries[i]>=tempValue){
-                addToArray(newSeries.length, newSeries, temperatureSeries[i]);
+                newSeries = addToArray(newSeries.length, newSeries, temperatureSeries[i]);
             }
         }
         return newSeries;
@@ -132,7 +143,7 @@ public class TemperatureSeriesAnalysis {
         if (this.temperatureSeries.length==0) {
             throw new IllegalArgumentException();
         }
-        return new TempSummaryStatistics();
+        return new TempSummaryStatistics(this.aver, this.deviation(), this.min(), this.max());
     }
 
     public int addTemps(double... temps) {
@@ -143,13 +154,13 @@ public class TemperatureSeriesAnalysis {
         }
         int len = temperatureSeries.length;
         for(double value : temps){
-            if (value<273){
+            if (value<-273){
                 throw new InputMismatchException();
             }
-            newSeries[len] = value;
+            temperatureSeries = addToArray(len, temperatureSeries, value);
             len++;
         }
-        this.temperatureSeries = newSeries;
+        this.temperatureSeries = temperatureSeries;
         return len;
     }
 }

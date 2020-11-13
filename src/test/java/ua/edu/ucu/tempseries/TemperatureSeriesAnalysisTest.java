@@ -13,13 +13,27 @@ public class TemperatureSeriesAnalysisTest {
         // setup input data and expected result
         double[] temperatureSeries = {-1.0};
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
-        double expResult = -1.0;
-
-        // call tested method
-        double actualResult = seriesAnalysis.average();
-
-        // compare expected result with actual result
-        assertEquals(expResult, actualResult, 0.00001);
+        double expAver = -1.0;
+        double expDevit = 0.0;
+        double expMin = -1.0;
+        double expMax = -1.0;
+        double expClosest0 = -1.0;
+        double expClosest2 = -1.0;
+        double expLenght = 5;
+        double actualAver = seriesAnalysis.average();
+        double actualDevit = seriesAnalysis.deviation();
+        double actualClosest0 = seriesAnalysis.findTempClosestToZero();
+        double actualMin = seriesAnalysis.min();
+        double actualMax = seriesAnalysis.max();
+        double actualClosest2 = seriesAnalysis.findTempClosestToValue((double)2);
+        double actualLenght = seriesAnalysis.addTemps(7.8, 145, 3, -4,7);
+        assertEquals(expAver, actualAver, 0.00001);
+        assertEquals(expDevit, actualDevit, 0.00001);
+        assertEquals(expMin, actualMin, 0.00001);
+        assertEquals(expMax, actualMax, 0.00001);
+        assertEquals(expClosest0, actualClosest0, 0.00001);
+        assertEquals(expClosest2, actualClosest2, 0.00001);
+        assertEquals(expLenght, actualLenght, 0.00001);
     }
 
     @Ignore
@@ -30,35 +44,42 @@ public class TemperatureSeriesAnalysisTest {
 
         // expect exception here
         seriesAnalysis.average();
+        seriesAnalysis.deviation();
+        seriesAnalysis.max();
+        seriesAnalysis.min();
+        seriesAnalysis.findTempClosestToZero();
+        seriesAnalysis.findTempClosestToValue((double) 3);
+        seriesAnalysis.summaryStatistics();
+
     }
 
     @Ignore
     @Test
     public void testAverage() {
         double[] temperatureSeries = {3.0, -5.0, 1.0, 5.0};
-        double[] addToSeries = {7.8, 145,3, -4,7};
         TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
         double expAver = 1.0;
         double expDevit = 14.0;
+        double expMin = -5.0;
+        double expMax = 5.0;
+        double expClosest0 = 1.0;
+        double expClosest2 = 3.0;
+        double expLenght = 8;
         double actualAver = seriesAnalysis.average();
-        double devit = seriesAnalysis.deviation();
-        double closest = seriesAnalysis.findTempClosestToZero();
-        System.out.println(actualAver);
-        System.out.println(devit);
-        System.out.println(seriesAnalysis.min());
-        System.out.println(seriesAnalysis.max());
-        System.out.println(closest);
-        double closest2 = seriesAnalysis.findTempClosestToValue((double)2);
-        System.out.println(closest2);
-        System.out.println(Arrays.toString(seriesAnalysis.findTempsLessThen((double) 3)));
-        System.out.println(Arrays.toString(seriesAnalysis.findTempsGreaterThen(((double) 2))));
+        double actualDevit = seriesAnalysis.deviation();
+        double actualClosest0 = seriesAnalysis.findTempClosestToZero();
+        double actualMin = seriesAnalysis.min();
+        double actualMax = seriesAnalysis.max();
+        double actualClosest2 = seriesAnalysis.findTempClosestToValue((double)2);
+        double actualLenght = seriesAnalysis.addTemps(7.8, 145, 3, -4,7);
         assertEquals(expAver, actualAver, 0.00001);
-        seriesAnalysis.addTemps(7.8, 145,3, -4,7);
-        System.out.println(Arrays.toString(seriesAnalysis.temperatureSeries));
-        TempSummaryStatistics summary = seriesAnalysis.summaryStatistics();
-        System.out.println(summary.avgTemp);
-
+        assertEquals(expDevit, actualDevit, 0.00001);
+        assertEquals(expMin, actualMin, 0.00001);
+        assertEquals(expMax, actualMax, 0.00001);
+        assertEquals(expClosest0, actualClosest0, 0.00001);
+        assertEquals(expClosest2, actualClosest2, 0.00001);
+        assertEquals(expLenght, actualLenght, 0.00001);
     }
-    
 
 }
+
